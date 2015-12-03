@@ -1,26 +1,81 @@
-<style>h2 {color: darkblue;}</style>
-<p style="margin-top: 10px;color:#105cb6;font-style: italic; font-size: large">This seed shows a "typical" layout for an application that requires authentication and uses
-  <b>ROLES</b> to distinguish between what authenticated users can do.</p>
-<ul>
-  <li><b style="display: inline-block;width:14em;">Home and 'Using the Seed'</b>Can be seen by all</li>
-  <li><b style="display: inline-block;width:14em;">Page for Users</b> Access to data (REST) requires user to be authenticated as a <em>User</em></li>
-  <li><b style="display: inline-block;width:14em;">Page for Admins</b> Access to data (REST) requires user to be authenticated as an <em>Admin</em></li>
-</ul>
 
-<div>
-  <h2>Filter Demo</h2>
-  <ul>
-    <li>Using the checkmark filter with True: {{true | checkmark}} </li>
-    <li>Using the checkmark filter with False: {{false | checkmark}} </li>
-  </ul>
-  <p><span style="font-weight: bold">TESTING: </span><em>See testFilters.js</em> in the Unit Test Folder for an example of how to test a filter</p>
+<div class="panel panel-default" id="bg" style="border-radius: 20px 20px 20px">
+
+    <div class="panel-body" id="search">
+        
+        
+        <form class="form-horizontal">
+            <div class="form-horizontal">
+                <fieldset>
+                    <div class="form-group" id="searchGroup">
+                        <label class="col-sm-2 control-label" for="departureDate">Departure Date</label>
+                        <div class="col-sm-6">
+                            <input type="date" class="form-control transparent-input" id="departureDate" name="DepartureDate"  ng-model="depDate" placeholder="Required">
+                        </div>
+                    </div>
+                    <div class="form-group" id="searchOption">
+                        <label class="col-sm-2 control-label" for="flyFrom">Fly from</label>
+                        <div class="col-sm-6">
+                            <select id="flyFrom" name="flyFrom" ng-model="flyFrom" class="form-control">
+                                <option value="SXF"><font>Berlin</font></option>
+                                <option value="CPH"><font>Copenhagen</font></option>
+                                <option value="STN"><font>London</font></option>
+                                <option value="CDG"><font>Paris</font></option>
+                                <option value="BCN"><font>Barcelona</font></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" id="searchOption">
+                        <label class="col-sm-2 control-label" ng-model="flyTo" for="flyTo">Fly to</label>
+                        <div class="col-sm-6">
+                            <select id="flyTo" name="flyTo" class="form-control">
+                                <option value=""><font></font></option>
+                                <option value="SXF"><font>Berlin</font></option>
+                                <option value="CPH"><font>Copenhagen</font></option>
+                                <option value="STN"><font>London</font></option>
+                                <option value="CDG"><font>Paris</font></option>
+                                <option value="BCN"><font>Barcelona</font></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" id="countryGroup">
+                        <label class="col-sm-2 control-label" for="country">Seats</label>
+                        <div class="col-sm-6">
+                            <input type="number" class="form-control" id="numberOfSeats" name="numberOfSeats" ng-model="seats" placeholder="Required">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"></label>
+                        <div class="col-sm-6">
+                            <button type="button" ng-click="getflightskurwa()" class="btn btn-success">
+                                <font>Find</font>
+                            </button>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </form>
+
+
+    </div>
+
+
+
 </div>
-<div>
-  <h2>Factory + Service Demo</h2>
-  <p>This message is fetched from a factory: <span style="font-weight: bold"> {{ctrl.msgFromFactory}}</span></p>
-  <p>This message is fetched from a Service: <span style="font-weight: bold"> {{ctrl.msgFromService}}</span></p>
-  <p><span style="font-weight: bold">TESTING: </span>See <em>testFactories.js</em> and <em>testServices.js</em> in the Unit Test Folder for examples of how to test Factories and Services</p>
+
+<div class="panel panel-default">
+    <div class="panel panel-heading">
+        <h3 class="panel-title"><strong>flightsFrom.airline</strong></h3>
+    </div>
+    <div class="panel-body">
+        details...
+    </div>
 </div>
-
-
-<h3 style="color: darkred;"><em>Important: This seed is NOT meant for Real Life Projects.</em></h3>
+<div class="panel panel-default">
+    <div class="panel panel-heading">
+        <h3 class="panel-title"><strong>Flight 2 title</strong></h3>
+    </div>
+    <div class="panel-body">
+        details...
+    </div>
+</div>

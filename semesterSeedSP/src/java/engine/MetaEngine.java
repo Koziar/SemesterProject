@@ -15,13 +15,13 @@ import java.util.Scanner;
 public class MetaEngine
 {
 
-    public static String getFlightsFrom(String from, String date, Integer persons) throws MalformedURLException, IOException
+    public static String getFlightsFrom(String from, String date, String persons) throws MalformedURLException, IOException
     {
         URL url = new URL("http://angularairline-plaul.rhcloud.com/api/flightinfo/" + from + "/" + date + "/" + persons);
         return getInfoFromGivenURL(url);
     }
 
-    public static String getFlightsFromTO(String from, String to, String date, Integer persons) throws MalformedURLException, IOException
+    public static String getFlightsFromTO(String from, String to, String date, String persons) throws MalformedURLException, IOException
     {
         URL url = new URL("http://angularairline-plaul.rhcloud.com/api/flightinfo/" + from + "/" + to + "/" + date + "/" + persons);
         return getInfoFromGivenURL(url);
