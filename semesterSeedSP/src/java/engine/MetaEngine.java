@@ -1,4 +1,3 @@
-
 package engine;
 
 import java.io.IOException;
@@ -12,23 +11,26 @@ import java.util.Scanner;
  *
  * @author wookash
  */
-public class MetaEngine
-{
+public class MetaEngine {
 
-    public static String getFlightsFrom(String from, String date, String persons) throws MalformedURLException, IOException
-    {
-        URL url = new URL("http://angularairline-plaul.rhcloud.com/api/flightinfo/" + from + "/" + date + "/" + persons);
+    Pinger p = new Pinger();
+
+    public String getFlightsFrom(String from, String date, Integer persons) throws MalformedURLException, IOException {
+        Pinger p = new Pinger();
+        URL url = new URL(p.getUrlsThreadPingerThingy() + from + "/" + date + "/" + persons);
+//     URL url =p.getUrlsThreadPingerThingy();
+//        URL url = new URL("http://angularairline-plaul.rhcloud.com/api/flightinfo/" + from + "/" + date + "/" + persons);
         return getInfoFromGivenURL(url);
     }
 
-    public static String getFlightsFromTO(String from, String to, String date, String persons) throws MalformedURLException, IOException
-    {
-        URL url = new URL("http://angularairline-plaul.rhcloud.com/api/flightinfo/" + from + "/" + to + "/" + date + "/" + persons);
+    public String getFlightsFromTO(String from, String to, String date, Integer persons) throws MalformedURLException, IOException {
+        URL url = new URL(p.getUrlsThreadPingerThingy() + from + "/" + to + "/" + date + "/" + persons);
+
+//        URL url = new URL("http://angularairline-plaul.rhcloud.com/api/flightinfo/" + from + "/" + to + "/" + date + "/" + persons);
         return getInfoFromGivenURL(url);
     }
 
-    private static String getInfoFromGivenURL(URL url) throws IOException
-    {
+    private String getInfoFromGivenURL(URL url) throws IOException {
 
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
@@ -42,6 +44,5 @@ public class MetaEngine
 
         return jsonStr;
     }
-
 
 }
