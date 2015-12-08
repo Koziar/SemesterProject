@@ -1,48 +1,91 @@
-package engine;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+package metaEngine;
+
+import entity.Airline;
+import facades.FlightFacadeInterface;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Scanner;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-/**
- *
- * @author wookash
- */
-public class MetaEngine {
+public class MetaEngine implements FlightFacadeInterface
+{
+    //this class searches all airlines for flights
 
-    Pinger p = new Pinger();
+    private List<Airline> airlines;
+    private List<Flight> flights;
 
-    public String getFlightsFrom(String from, String date, Integer persons) throws MalformedURLException, IOException {
-        Pinger p = new Pinger();
-        URL url = new URL(p.getUrlsThreadPingerThingy() + from + "/" + date + "/" + persons);
-//     URL url =p.getUrlsThreadPingerThingy();
-//        URL url = new URL("http://angularairline-plaul.rhcloud.com/api/flightinfo/" + from + "/" + date + "/" + persons);
-        return getInfoFromGivenURL(url);
+    public MetaEngine(List<Airline> airlines)
+    {
+
+        this.airlines = airlines;
+        this.flights = new ArrayList();
     }
 
-    public String getFlightsFromTO(String from, String to, String date, Integer persons) throws MalformedURLException, IOException {
-        URL url = new URL(p.getUrlsThreadPingerThingy() + from + "/" + to + "/" + date + "/" + persons);
+    //start the SkyScanner to scan for flights in each airline
+    private void startSkyScanner(FlightInfo flightInfo)
+    {
 
-//        URL url = new URL("http://angularairline-plaul.rhcloud.com/api/flightinfo/" + from + "/" + to + "/" + date + "/" + persons);
-        return getInfoFromGivenURL(url);
-    }
+        List<Future<List<Flight>>> futures = new ArrayList();
 
-    private String getInfoFromGivenURL(URL url) throws IOException {
+        //create a thread pool which creates a number of threads equal to the number of airlines
+        ExecutorService executor = Executors.newFixedThreadPool(airlines.size());
 
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod("GET");
-        con.setRequestProperty("Accept", "application/json; charset=UTF-8");
-        Scanner scan = new Scanner(con.getInputStream());
-        String jsonStr = "";
-        while (scan.hasNext()) {
-            jsonStr += scan.nextLine();
+        for (Airline airline : airlines) {
+
+            //new scanner for the airline
+            SkyScanner scanner = new SkyScanner(airline, flightInfo);
+
+            //start a new Callable for each of the airlines
+            Future<List<Flight>> future = executor.submit(scanner);
+            //add the future from the scanner to the futures list
+            futures.add(future);
         }
-        scan.close();
+        executor.shutdown();
 
-        return jsonStr;
+        for (Future<List<Flight>> future : futures) {
+
+            try {
+                //get the flight from the future
+                List<Flight> flightsFromFeature = future.get();
+                for (Flight flightFromFeature : flightsFromFeature) {
+                    flights.add(flightFromFeature);
+                }
+                //add the flight to the flights list
+
+            } catch (InterruptedException ex) {
+                Logger.getLogger(MetaEngine.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ExecutionException ex) {
+                Logger.getLogger(MetaEngine.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    @Override
+    public List<Flight> getAllFlightsFrom(FlightInfo flightInfo)
+    {
+
+        //start the scanner
+        startSkyScanner(flightInfo);
+
+        //return the flights
+        return flights;
+    }
+
+    @Override
+    public List<Flight> getAllFlightsFromTo(FlightInfo flightInfo)
+    {
+
+        //start the scanner
+        startSkyScanner(flightInfo);
+
+        //return the flights
+        return flights;
     }
 
 }

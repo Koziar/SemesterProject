@@ -84,6 +84,7 @@ public class Pinger {
         };
         List<Future<String>> futures = new ArrayList();
         ExecutorService executor = Executors.newFixedThreadPool(10);
+        
         for (String url : urls) {
             Callable<String> callable = new ping(url);
             Future<String> future = executor.submit(callable);
@@ -100,15 +101,18 @@ public class Pinger {
                 Logger.getLogger(Pinger.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        return urls.toString() ;
+        return urls.toString();
        
     }
 
-//    public static void main(String[] args) {
-//        Pinger p = new Pinger();
-////        p.getUrlsThreadPingerThingy();
-//        System.out.println(p.getUrlsThreadPingerThingy());
-//    }
+    public static void main(String[] args) {
+        Pinger p = new Pinger();
+        UrlFacade facade = new UrlFacade();
+        facade.addUrlToDB(new Url("test", "test", "http://angularairline-plaul.rhcloud.com/"));
+//        p.getUrlsThreadPingerThingy();
+        
+        System.out.println(p.getUrlsThreadPingerThingy());
+    }
 
     
 
