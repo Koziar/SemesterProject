@@ -2,8 +2,8 @@ package facades;
 
 import java.util.Date;
 import java.util.List;
-import metaEngine.Flight;
-import metaEngine.FlightInfo;
+import engine.Flight;
+import engine.FlightInfo;
 
 public interface FlightFacadeInterface {
     

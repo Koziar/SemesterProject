@@ -16,12 +16,15 @@ import javax.persistence.Table;
 @Table(name="SystemUser")
 public class User implements Serializable {
   private static final long serialVersionUID = 1L;
-  private String password;  //Pleeeeease dont store me in plain text
+  private String password;  //Pleeeeease dont store me in plain text // no problem!
+  private String email;
+  private String firstName;
+  private String lastName;
   
   @Id
   private String userName;
   
-  @ManyToMany(cascade = CascadeType.ALL)
+  @ManyToMany(cascade = CascadeType.PERSIST)
   @JoinTable(name = "SystemUser_USERROLE", joinColumns = {
   @JoinColumn(name = "userName", referencedColumnName = "userName")}, inverseJoinColumns = {
   @JoinColumn(name = "roleName")})
@@ -30,9 +33,12 @@ public class User implements Serializable {
   public User() {
   }
 
-  public User(String userName, String password) {
+  public User(String userName, String password, String email, String firstName, String lastName) {
     this.userName = userName;
     this.password = password;
+    this.email = email;
+    this.firstName = firstName;
+    this.lastName = lastName;
   }
 
   public List<String> getRolesAsStrings(){
@@ -67,8 +73,35 @@ public class User implements Serializable {
   public void setUserName(String userName) {
     this.userName = userName;
   }
+
+    public String getEmail()
+    {
+        return email;
+    }
+
+    public void setEmail(String email)
+    {
+        this.email = email;
+    }
+
+    public String getFirstName()
+    {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName)
+    {
+        this.firstName = firstName;
+    }
+
+    public String getLastName()
+    {
+        return lastName;
+    }
+
+    public void setLastName(String lastName)
+    {
+        this.lastName = lastName;
+    }
   
-  
- 
-          
 }

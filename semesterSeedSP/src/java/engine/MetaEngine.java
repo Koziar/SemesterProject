@@ -1,10 +1,9 @@
 
-package metaEngine;
+package engine;
 
-import entity.Airline;
+import entity.Url;
 import facades.FlightFacadeInterface;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -17,10 +16,10 @@ public class MetaEngine implements FlightFacadeInterface
 {
     //this class searches all airlines for flights
 
-    private List<Airline> airlines;
+    private List<Url> airlines;
     private List<Flight> flights;
 
-    public MetaEngine(List<Airline> airlines)
+    public MetaEngine(List<Url> airlines)
     {
 
         this.airlines = airlines;
@@ -36,7 +35,7 @@ public class MetaEngine implements FlightFacadeInterface
         //create a thread pool which creates a number of threads equal to the number of airlines
         ExecutorService executor = Executors.newFixedThreadPool(airlines.size());
 
-        for (Airline airline : airlines) {
+        for (Url airline : airlines) {
 
             //new scanner for the airline
             SkyScanner scanner = new SkyScanner(airline, flightInfo);

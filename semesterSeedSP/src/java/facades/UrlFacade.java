@@ -5,20 +5,13 @@
  */
 package facades;
 
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import deploy.DeploymentConfiguration;
 import entity.Url;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.Query;
-import net.minidev.json.JSONObject;
+
+
 
 /**
  *
@@ -62,6 +55,7 @@ public class UrlFacade {
         Query query = em.createQuery("SELECT u FROM Url u", Url.class
         );
 
+        List<Url> airlines = query.getResultList();
         return query.getResultList();
     }
 }
