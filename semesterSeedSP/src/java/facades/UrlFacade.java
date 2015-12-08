@@ -6,6 +6,7 @@
 package facades;
 
 import entity.Url;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -50,12 +51,19 @@ public class UrlFacade {
 
     public List<Url> getUrls() {
 
-        EntityManager em = emf.createEntityManager();
-
-        Query query = em.createQuery("SELECT u FROM Url u", Url.class
-        );
-
-        List<Url> airlines = query.getResultList();
-        return query.getResultList();
+//        EntityManager em = emf.createEntityManager();
+//
+//        Query query = em.createQuery("SELECT u FROM Url u", Url.class
+//        );
+//
+//        List<Url> airlines = query.getResultList();
+//        return query.getResultList();
+        
+        //Temporary added airlines
+        List<Url> testFlight = new ArrayList();
+        testFlight.add(new Url("test", "", "http://angularairline-plaul.rhcloud.com/api"));
+        testFlight.add(new Url("outsourcing", "", "http://sargardon-001-site1.atempurl.com/api"));
+        
+        return testFlight;
     }
 }

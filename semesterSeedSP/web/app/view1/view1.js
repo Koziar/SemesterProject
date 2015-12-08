@@ -33,7 +33,6 @@ angular.module('myApp.view1', ['ngRoute'])
             };
 
             $scope.getAllFlightsFrom = function () {
-                alert("in getAllFlightFrom")
                 $scope.showSpinner = true;
                 $scope.isError = false;
                 $scope.flights = [];//clear the flights
@@ -43,7 +42,7 @@ angular.module('myApp.view1', ['ngRoute'])
                 var month = $scope.depDate.getMonth();
                 var day = $scope.depDate.getDate();
 
-                var rawDate = new Date(year, month, day, 1);
+                var rawDate = new Date(year, month, day, 24);
 
                 //alert(year + "-" + month + "-" + day);
 
