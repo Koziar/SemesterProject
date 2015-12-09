@@ -1,18 +1,8 @@
-
 <div class="panel panel-default" id="bg" style="border-radius: 20px 20px 20px">
-
     <div class="panel-body" id="search">
-
-
         <form class="form-horizontal">
             <div class="form-horizontal">
-
-                <div class="alert alert-dismissible alert-danger" ng-show="isError">
-                    <button type="button" class="close" data-dismiss="alert"></button>
-                    <p>{{errorMessage}}</p>
-                </div>
                 <div class="form-group" id="searchGroup">
-
                     <div class="col-sm-3" alt="origin" title="Enter origin city">
                         <select id="flyFrom" required name="flyFrom" ng-model="flyFrom" class="form-control">
                             <option value="" disabled selected><font>Enter origin city</font></option>
@@ -23,7 +13,6 @@
                             <option value="BCN"><font>Barcelona</font></option>
                         </select>
                     </div>
-
                     <div class="col-sm-3" alt="destination" title="Enter destination city">
                         <select id="flyTo" name="flyTo" ng-model="flyTo" class="form-control">
                             <option value="" disabled selected><font>Enter destination city</font></option>
@@ -36,55 +25,40 @@
                     </div>
                     <div class="col-sm-3 inner-addon left-addon" alt="departureDate" title="Departure date">
                         <i class="glyphicon glyphicon-calendar"></i>
-                        <input type="date" class="form-control transparent-input" id="departureDate" name="DepartureDate"  min="2015-12-09" max="2016-12-31"  ng-model="depDate" placeholder="Required">
+                        <input type="date" class="form-control transparent-input" id="departureDate" name="DepartureDate"  min="2015-12-09" max="3000-12-31"  ng-model="depDate" placeholder="Required">
                     </div>
                     <div class="col-sm-1"  alt="seats" title="Number of seats">
-                        <input type="number" class="form-control" id="numberOfSeats" name="numberOfSeats" min="1" max="99" ng-model="seats" placeholder="Required">
+                        <input type="number" class="form-control" id="numberOfSeats" name="numberOfSeats" min="1" ng-model="seats" placeholder="Required">
                     </div>
                     <div class="col-sm-1">
                         <button type="button" alt="search" title="Search for flights" ng-click="searchFlights()" class="btn btn-success">
                             <span class="glyphicon glyphicon-search" aria-hidden="true"></span><font> Find</font>
                         </button>
                     </div>
-
                 </div>
-
-
             </div>
         </form>
-
-
     </div>
-
-
-
 </div>
-
-
-                        <div class="sk-circle" ng-show="showSpinner">
-                            <div class="sk-circle1 sk-child"></div>
-                            <div class="sk-circle2 sk-child"></div>
-                            <div class="sk-circle3 sk-child"></div>
-                            <div class="sk-circle4 sk-child"></div>
-                            <div class="sk-circle5 sk-child"></div>
-                            <div class="sk-circle6 sk-child"></div>
-                            <div class="sk-circle7 sk-child"></div>
-                            <div class="sk-circle8 sk-child"></div>
-                            <div class="sk-circle9 sk-child"></div>
-                            <div class="sk-circle10 sk-child"></div>
-                            <div class="sk-circle11 sk-child"></div>
-                            <div class="sk-circle12 sk-child"></div>
-                        </div>
-
-
+<div class="alert alert-danger" role="alert" ng-show="isError">{{errorMessage}}</div>
+<div class="sk-circle" ng-show="showSpinner">
+    <div class="sk-circle1 sk-child"></div>
+    <div class="sk-circle2 sk-child"></div>
+    <div class="sk-circle3 sk-child"></div>
+    <div class="sk-circle4 sk-child"></div>
+    <div class="sk-circle5 sk-child"></div>
+    <div class="sk-circle6 sk-child"></div>
+    <div class="sk-circle7 sk-child"></div>
+    <div class="sk-circle8 sk-child"></div>
+    <div class="sk-circle9 sk-child"></div>
+    <div class="sk-circle10 sk-child"></div>
+    <div class="sk-circle11 sk-child"></div>
+    <div class="sk-circle12 sk-child"></div>
+</div>
 <div class="panel panel-default" ng-repeat="flight in flights">
-
     <div class="panel panel-heading">
-
         <h3 class="panel-title"><strong>{{ flight.airline}}</strong></h3>
-
     </div>
-
     <div class="panel-body">
         <table>
             <tr>

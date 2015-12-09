@@ -1,30 +1,25 @@
-
 package engine;
 
 import entity.Url;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.Callable;
 
-public class SkyScanner implements Callable<List<Flight>>
-{
+public class SkyScanner implements Callable<String> {
 
     private Url airline;
     private FlightInfo flightInfo;
 
-    public SkyScanner(Url airline, FlightInfo flightInfo)
-    {
+    public SkyScanner(Url airline, FlightInfo flightInfo) {
         this.airline = airline;
         this.flightInfo = flightInfo;
     }
-
     @Override
-    public List<Flight> call() throws Exception
-    {
-        DataProcessor dp = new DataProcessor();
+    public String call() throws IOException {
         URL url = null;
         if (flightInfo.getDestination() != null) {
             url = new URL(airline.getUrl() + '/' + "flightinfo" + '/' + flightInfo.getOrigin() + '/' + flightInfo.getDestination() + '/' + flightInfo.getFlightDate() + '/' + flightInfo.getNumOfTickets());
@@ -32,28 +27,23 @@ public class SkyScanner implements Callable<List<Flight>>
             url = new URL(airline.getUrl() + '/' + "flightinfo" + '/' + flightInfo.getOrigin() + '/' + flightInfo.getFlightDate() + '/' + flightInfo.getNumOfTickets());
         }
         String flights = getInfoFromGivenURL(url);
-        return dp.getListOfFlights(flights);
+        return flights;
     }
-
-    private String getInfoFromGivenURL(URL url) throws IOException
-    {
+    private String getInfoFromGivenURL(URL url) throws IOException {
+        
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        try {
-            con.setRequestMethod("GET");
-            con.setRequestProperty("Accept", "application/json; charset=UTF-8");
-            Scanner scan = new Scanner(con.getInputStream());
-            String jsonStr = "";
-            while (scan.hasNext()) {
-                jsonStr += scan.nextLine();
-            }
-            scan.close();
-            return jsonStr;
-
-        } catch (IOException e) {
-
-            System.out.println(con.getResponseCode() + " " + con.getResponseMessage());
+        con.setRequestProperty("Accept", "application/json");
+        con.setRequestMethod("GET");
+        con.setDoOutput(true);
+        int HttpResult = con.getResponseCode();
+        InputStreamReader is = HttpResult < 400 ? new InputStreamReader(con.getInputStream(), "utf-8")
+                : new InputStreamReader(con.getErrorStream(), "utf-8");
+        Scanner responseReader = new Scanner(is);
+        String response = "";
+        while (responseReader.hasNext()) {
+            response += responseReader.nextLine() + System.getProperty("line.separator");
         }
-        return "Error occured! ^";
+        responseReader.close();
+        return response;
     }
-
 }

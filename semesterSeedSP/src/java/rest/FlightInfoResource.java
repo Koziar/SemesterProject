@@ -6,7 +6,6 @@ import deploy.DeploymentConfiguration;
 import facades.FlightFacade;
 import facades.FlightFacadeInterface;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -20,6 +19,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import engine.Flight;
 import engine.FlightInfo;
+import errorHandling.FlightException;
+import errorHandling.InternalServerException;
+import errorHandling.InvalidInputException;
 
 @Path("flightinfo")
 public class FlightInfoResource {
@@ -45,33 +47,23 @@ public class FlightInfoResource {
     public Response getAllFlightsFrom(
             @PathParam("from") String from,
             @PathParam("date") String date,
-            @PathParam("numTickets") int numTickets) throws ParseException {
+            @PathParam("numTickets") int numTickets) throws InternalServerException, InvalidInputException, FlightException {
 
-               //encapsulate the flightinfo parameters
-//        List<Flight> demoflights = new ArrayList();
-//        
-//        demoflights.add(new Flight("AirlineTest", "2016-01-04T23:00:00.000Z", 20, 1111.20, "BUS1213213", 140, "BCN", "CPH"));
-//        demoflights.add(new Flight("AirlineTest1", "2016-01-04T23:00:00.000Z", 20, 1111.20, "BUS1213213", 140, "BCN", "CPH"));
-//        demoflights.add(new Flight("AirlineTest2", "2016-01-04T23:00:00.000Z", 20, 1111.20, "BUS1213213", 140, "BCN", "CPH"));
-//        demoflights.add(new Flight("AirlineTest3", "2016-01-04T23:00:00.000Z", 20, 1111.20, "BUS1213213", 140, "BCN", "CPH"));
-//        demoflights.add(new Flight("AirlineTest4", "2016-01-04T23:00:00.000Z", 20, 1111.20, "BUS1213213", 140, "BCN", "CPH"));
-//        demoflights.add(new Flight("AirlineTest5", "2016-01-04T23:00:00.000Z", 20, 1111.20, "BUS1213213", 140, "BCN", "CPH"));
-//        demoflights.add(new Flight("AirlineTest6", "2016-01-04T23:00:00.000Z", 20, 1111.20, "BUS1213213", 140, "BCN", "CPH"));
+        //encapsulate the flightinfo parameters
         FlightInfo flightInfo = new FlightInfo(from, date, numTickets);
+        //check if the flightInfo is valid
+        if (flightInfo.getOrigin() == null || flightInfo.getOrigin() == "") {
+            throw new InvalidInputException("Invalid input! Please try again : ) ");
+        } else if (flightInfo.getFlightDate() == null || flightInfo.getFlightDate() == "") {
+            throw new InvalidInputException("Invalid input! Please try again : ) ");
+        } else if (flightInfo.getNumOfTickets() <= 0) {
+            throw new InvalidInputException("Invalid input! Please try again : ) ");
+        }
 
-        //pass the flight info to the facade
+        //get all flights from the FlightFacade
         List<Flight> flights = flightFacade.getAllFlightsFromTo(flightInfo);
 
-//        if (flights == null) {
-//            
-//            throw new FlightException("Fuck that shit! Where are the flights?!", 1);
-//
-//        } else if (flights.isEmpty()) {
-//
-//            throw new FlightException("Fuck that shit! Where are the flights?!", 1);
-//
-//        }
-//        
+        //return the flights as a Json object
         return Response.ok(gson.toJson(flights)).build();
     }
 
@@ -82,33 +74,24 @@ public class FlightInfoResource {
             @PathParam("from") String from,
             @PathParam("to") String to,
             @PathParam("date") String date,
-            @PathParam("numTickets") int numTickets) throws ParseException {
-
+            @PathParam("numTickets") int numTickets) throws FlightException, InternalServerException, InvalidInputException {
 
         //encapsulate the flightinfo parameters
         FlightInfo flightInfo = new FlightInfo(from, to, date, numTickets);
-
-//        List<Flight> demoflights = new ArrayList();
-//        
-//        demoflights.add(new Flight("AirlineTest", "2016-01-04T23:00:00.000Z", 20, 1111.20, "BUS1213213", 140, "BCN", "CPH"));
-//        demoflights.add(new Flight("AirlineTest1", "2016-01-04T23:00:00.000Z", 20, 1111.20, "BUS1213213", 140, "BCN", "CPH"));
-//        demoflights.add(new Flight("AirlineTest2", "2016-01-04T23:00:00.000Z", 20, 1111.20, "BUS1213213", 140, "BCN", "CPH"));
-//        demoflights.add(new Flight("AirlineTest3", "2016-01-04T23:00:00.000Z", 20, 1111.20, "BUS1213213", 140, "BCN", "CPH"));
-//        demoflights.add(new Flight("AirlineTest4", "2016-01-04T23:00:00.000Z", 20, 1111.20, "BUS1213213", 140, "BCN", "CPH"));
-//        demoflights.add(new Flight("AirlineTest5", "2016-01-04T23:00:00.000Z", 20, 1111.20, "BUS1213213", 140, "BCN", "CPH"));
-//        demoflights.add(new Flight("AirlineTest6", "2016-01-04T23:00:00.000Z", 20, 1111.20, "BUS1213213", 140, "BCN", "CPH"));
-        //pass the flight info to the facade
+        //check if the flightInfo is valid
+        if (flightInfo.getOrigin() == null || flightInfo.getOrigin() == "") {
+            throw new InvalidInputException("Invalid input! Please try again : ) ");
+        }
+        if (flightInfo.getDestination() == null || flightInfo.getDestination() == "") {
+            throw new InvalidInputException("Invalid input! Please try again : ) ");
+        } else if (flightInfo.getFlightDate() == null || flightInfo.getFlightDate() == "") {
+            throw new InvalidInputException("Invalid input! Please try again : ) ");
+        } else if (flightInfo.getNumOfTickets() <= 0) {
+            throw new InvalidInputException("Invalid input! Please try again : ) ");
+        }
+        //get all flights from the FlightFacade
         List<Flight> flights = flightFacade.getAllFlightsFromTo(flightInfo);
-
-//        if (flights == null) {
-//            
-//            throw new FlightException("Fuck that shit! Where are the flights?!", 1);
-//
-//        } else if (flights.isEmpty()) {
-//
-//            throw new FlightException("Fuck that shit! Where are the flights?!", 1);
-//
-//        }
+        //return the flights as a Json object
         return Response.ok(gson.toJson(flights)).build();
     }
 }

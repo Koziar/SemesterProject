@@ -8,6 +8,8 @@ import engine.Flight;
 import engine.FlightInfo;
 import engine.MetaEngine;
 import entity.Url;
+import errorHandling.FlightException;
+import errorHandling.InternalServerException;
 
 public class FlightFacade implements FlightFacadeInterface{
     
@@ -24,7 +26,7 @@ public class FlightFacade implements FlightFacadeInterface{
     }
 
     @Override
-    public List<Flight> getAllFlightsFrom(FlightInfo flightInfo) {
+    public List<Flight> getAllFlightsFrom(FlightInfo flightInfo) throws InternalServerException, FlightException {
         //get all airlines
         List<Url> airlines = airlineFacade.getUrls();
         //pass the airlines to the engine
@@ -36,7 +38,7 @@ public class FlightFacade implements FlightFacadeInterface{
     }
 
     @Override
-    public List<Flight> getAllFlightsFromTo(FlightInfo flightInfo) {
+    public List<Flight> getAllFlightsFromTo(FlightInfo flightInfo) throws InternalServerException, FlightException {
         
         //get all airlines
         List<Url> airlines = airlineFacade.getUrls();
