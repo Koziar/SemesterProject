@@ -37,18 +37,9 @@ public class Reservation implements Serializable
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "flightInstance", referencedColumnName = "id")
     private FlightInstance flightInstance;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "reservation")
-    private List<Passenger> passengers;
 
     public Reservation()
     {
-    }
-
-    public Reservation(double price, FlightInstance flightInstance, List<Passenger> passengers)
-    {
-        this.price = price;
-        this.flightInstance = flightInstance;
-        this.passengers = passengers;
     }
 
     public Reservation(double price, FlightInstance flightInstance)
@@ -76,18 +67,7 @@ public class Reservation implements Serializable
     {
         this.flightInstance = flightInstance;
     }
-
-    public List<Passenger> getPassengers()
-    {
-        return passengers;
-    }
-
-    public void setPassengers(List<Passenger> passengers)
-    {
-        this.passengers = passengers;
-    }
     
-
     public Long getId()
     {
         return id;

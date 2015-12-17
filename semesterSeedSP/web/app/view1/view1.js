@@ -61,6 +61,7 @@ angular.module('myApp.view1', ['ngRoute'])
                         }, function (error) {
                         });
             };
+            
             $scope.getAllFlightsFromTo = function () {
                 $scope.showSpinner = true;
                 $scope.isError = false;//hide the error bar

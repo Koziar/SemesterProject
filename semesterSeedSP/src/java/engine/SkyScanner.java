@@ -22,9 +22,9 @@ public class SkyScanner implements Callable<String> {
     public String call() throws IOException {
         URL url = null;
         if (flightInfo.getDestination() != null) {
-            url = new URL(airline.getUrl() + '/' + "flightinfo" + '/' + flightInfo.getOrigin() + '/' + flightInfo.getDestination() + '/' + flightInfo.getFlightDate() + '/' + flightInfo.getNumOfTickets());
+            url = new URL(airline.getUrl() + "api" + '/' + "flightinfo" + '/' + flightInfo.getOrigin() + '/' + flightInfo.getDestination() + '/' + flightInfo.getFlightDate() + '/' + flightInfo.getNumOfTickets());
         } else {
-            url = new URL(airline.getUrl() + '/' + "flightinfo" + '/' + flightInfo.getOrigin() + '/' + flightInfo.getFlightDate() + '/' + flightInfo.getNumOfTickets());
+            url = new URL(airline.getUrl() + "api" + '/' + "flightinfo" + '/' + flightInfo.getOrigin() + '/' + flightInfo.getFlightDate() + '/' + flightInfo.getNumOfTickets());
         }
         String flights = getInfoFromGivenURL(url);
         return flights;

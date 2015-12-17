@@ -1,0 +1,228 @@
+<style type="text/css">
+    #bg, #search-bg {
+        background-repeat: no-repeat;
+        background-size: 1080px auto;
+    }
+
+    #bg {
+        background-position: center top;
+        padding: 70px 90px 120px 90px;
+    }
+
+    #search-container {
+        position: relative;
+    }
+
+    #search-bg {
+        /* Absolutely position it, but stretch it to all four corners, then put it just behind #search's z-index */
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+        left: 0px;
+        z-index: 99;
+        /* Pull the background 70px higher to the same place as #bg's */
+        background-position: center -70px;
+
+        -webkit-filter: blur(10px);
+        filter: url('/media/blur.svg#blur');
+        filter: blur(50px);
+    }
+
+    #search {
+        /* Put this on top of the blurred layer */
+        position: relative;
+        z-index: 100;
+        padding: 20px;
+        border-radius: 20px 20px 20px;
+        /*background: rgba(192,192,192,0.3);*/
+        background: rgba(0,0,0,0.1);
+    }
+
+    @media (max-width: 600px ) {
+        #bg { padding: 10px; }
+        #search-bg { background-position: center -10px; }
+    }
+
+    #search h2, #search h5, #search input, #search label,#search h5 a { text-align: center; color: #fefefe; font-weight: normal; }
+    #search h2 { margin-bottom: 50px }
+    #search h5 { margin-top: 70px }
+</style>
+
+<div class="alert alert-danger" role="alert" ng-show="isError">{{errorMessage}}</div>
+
+<div ng-show="isAuthenticated">
+    <div class="row" ng-show="isOverview">
+        <h2 style="color: appworkspace">Overview of your booking</h2><br/>
+        <h3 style="color: orangered">Flight ID: <strong>{{ booking.flightID }}</strong></h3>
+        <br/>
+        <div class="col-md-6">
+            <h3 style="color: blue">Reservee Information</h3>
+            <table class="table table-stripped">
+                <thead>
+                    <tr>
+                        <th>Your name</th>
+                        <th>Your email</th>
+                        <th>Your phone</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="color: blue">{{ booking.ReserveeName}}</td>
+                        <td style="color: blue">{{ booking.ReserveeEmail}}</td>
+                        <td style="color: blue">{{ booking.ReserveePhone}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-6">
+            <h3 style="color: blue">Passengers Details</h3>
+            <table class="table table-stripped">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="passenger in  booking.Passengers">
+                        <td style="color: blue">{{ passenger.firstName}}</td>
+                        <td style="color: blue">{{ passenger.lastName}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div class="row">
+            <h3 style="color: #888">Total Price</h3>
+            <table class="table table-stripped">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="passenger in  booking.Passengers">
+                        <td style="color: blue">{{ passenger.firstName}}</td>
+                        <td style="color: blue">{{ passenger.lastName}}</td>
+                        <td style="color: blue">{{ selectedFlight.totalPrice }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h4 style="color: #888">Final Price: {{ finalPrice }}</h4>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <button type="submit" style="float: right"class="btn btn-info">Go Back</button>
+            </div>
+            <div class="col-md-6">
+                <button type="submit" style="float: right"class="btn btn-success" ng-click="confirmBooking()">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div id="bg" ng-hide="isOverview">
+            <div id="search-container">
+                <div id="search-bg"></div>
+                <div id="search">
+                    <div >
+                        <form class="form-horizontal">
+
+                            <div class="form-group form-group-lg">
+                                <label class="col-sm-2 control-label" for="reserveename">Your full Name</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" style="background-color: rgba(0,0,0,0.1); border: none;" type="text" ng-model="booking.reserveename">
+                                </div>
+                            </div>
+                            <div class="form-group form-group-lg">
+                                <label class="col-sm-2 control-label" for="reserveeemail">Your email</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" style="background-color: rgba(0,0,0,0.1); border: none;" type="text" ng_model="booking.reserveeemail">
+                                </div>
+                            </div>
+                            <div class="form-group form-group-lg">
+                                <label class="col-sm-2 control-label" for="reserveephone">Your Phone</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" style="background-color: rgba(0,0,0,0.1); border: none;" type="text" ng-model="booking.reserveephone">
+                                </div>
+                            </div>
+                            <div ng-show="showPassengers">
+                                <h3 style="color: blue">Your passengers</h3>
+                                <table class="table table-stripped">
+                                    <thead>
+                                        <tr>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="passenger in  booking.passengers">
+                                            <td style="color: blue">{{ passenger.firstName}}</td>
+                                            <td style="color: blue">{{ passenger.lastName}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <!--<li ng-repeat="passenger in  booking.passengers">{{ passenger.firstname}} || {{ passenger.lastname}}</li>-->
+                            </div>
+                            <div class="form-group form-group-lg">
+                                <label class="col-sm-2 control-label" for="passenger"></label>
+                                <div class="col-sm-10">
+                                    <button type="submit" style="float: right"class="btn btn-info" ng-click="showPassengerDetailsForm()">Add new passenger</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" style="float: right"class="btn btn-success" ng-click="continueBooking()">Continue</button>
+                            </div>
+
+                        </form>           
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-hide="isPassengerCreated">
+        <div class="col-md-6">
+
+            <div id="bg">
+                <div id="search-container">
+                    <div id="search-bg"></div>
+                    <div id="search">
+                        <div >
+                            <form class="form-horizontal">
+
+                                <div class="form-group form-group-lg">
+                                    <label class="col-sm-2 control-label" for="firstname">Passenger First Name</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" style="background-color: rgba(0,0,0,0.1); border: none;" type="text" ng-model="booking.passenger.firstName">
+                                    </div>
+                                </div>
+                                <div class="form-group form-group-lg">
+                                    <label class="col-sm-2 control-label" for="lastname">Passenger Last Name</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" style="background-color: rgba(0,0,0,0.1); border: none;" type="text" ng_model="booking.passenger.lastName">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" style="float: right"class="btn btn-success" ng-click="addPassenger()">Submit</button>
+                                </div>
+                            </form>           
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+    <div ng-show="isReservationSuccessfull">
+        <div class="row">
+            <h2 style="color: green">Your reservation is successfull! Enjoy your flight!</h2>
+        </div>
+    </div>
+</div>

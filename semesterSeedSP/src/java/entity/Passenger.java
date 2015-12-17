@@ -6,6 +6,7 @@
 
 package entity;
 
+import entity.flightReservation.FlightReservation;
 import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -33,20 +34,12 @@ public class Passenger implements Serializable
     private String firstName;
     @Column(name = "lastName")
     private String lastName;
+    
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "reservation", referencedColumnName = "id")
-    private Reservation reservation;
+    private FlightReservation flightReservation;
 
     public Passenger()
     {
-    }
-
-    public Passenger(Long id, String firstName, String lastName, Reservation reservation)
-    {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.reservation = reservation;
     }
 
     public Passenger(String firstName, String lastName)
@@ -55,11 +48,12 @@ public class Passenger implements Serializable
         this.lastName = lastName;
     }
 
-    public Passenger(String firstName, String lastName, Reservation reservation)
-    {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.reservation = reservation;
+    public FlightReservation getFlightReservation() {
+        return flightReservation;
+    }
+
+    public void setFlightReservation(FlightReservation flightReservation) {
+        this.flightReservation = flightReservation;
     }
 
     public String getFirstName()
@@ -81,17 +75,6 @@ public class Passenger implements Serializable
     {
         this.lastName = lastName;
     }
-
-    public Reservation getReservation()
-    {
-        return reservation;
-    }
-
-    public void setReservation(Reservation reservation)
-    {
-        this.reservation = reservation;
-    }
-    
 
     public Long getId()
     {
